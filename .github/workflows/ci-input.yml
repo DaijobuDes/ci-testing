@@ -1,0 +1,26 @@
+name: Check File Existence
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_path:
+        description: 'Path to the file to check'
+        required: true
+
+jobs:
+  check_file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check if file exists
+        id: check_file
+        run: |
+          if [ -f "${{ github.event.inputs.file_path }}" ]; then
+            echo "File ${{ github.event.inputs.file_path }} exists."
+          else
+            echo "File ${{ github.event.inputs.file_path }} does not exist."
+            exit -1
+          fi
